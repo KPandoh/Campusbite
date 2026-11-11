@@ -118,3 +118,9 @@ Then rewrite `lib/agent/systemPrompt.ts`. Name the business user, the logged-in 
 | `ps6_job_match.sql` | PS6 Job Match Agent |
 
 All dates in the seed data are relative to today, so the data is always fresh. All names, companies and records are made up. You can run a seed file again at any time to reset your data.
+
+## How the Agent Works
+
+1. Gemini receives the user's message along with the available tool list.
+2. Gemini requests a tool, and our code executes it only after a successful Zod validation check.
+3. The tool result goes back to Gemini, which repeats the process until it generates a final answer (maximum 8 rounds).
