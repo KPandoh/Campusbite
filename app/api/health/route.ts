@@ -6,7 +6,7 @@ export const runtime = "nodejs";
 /**
  * GET /api/health
  * Shows which settings are missing (never their values), which Supabase project
- * the app is connected to, and whether the tasks table can be read.
+ * the app is connected to, and whether the menu_items table can be read.
  */
 export async function GET() {
   // GEMINI_MODEL is optional (it has a default), so it is not checked here.
@@ -23,8 +23,9 @@ export async function GET() {
 
   let databaseCheck = "skipped (Supabase settings missing)";
   if (settings.SUPABASE_URL && settings.SUPABASE_SECRET_KEY) {
-    const { error } = await getSupabase().from("tasks").select("id").limit(1);
-    databaseCheck = error ? `failed: ${error.message}` : "ok (tasks table found)";
+    const { error } = await getSupabase().from("menu_items").select("id").limit(1);
+    if (error) console.error("[GET /api/health]", error.message);
+    databaseCheck = error ? `failed: ${error.message}` : "ok (menu_items table found)";
   }
 
   return NextResponse.json({
